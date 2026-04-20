@@ -26,9 +26,13 @@ functions.http('discordNotifier', async (req, res) => {
             },
         ],
     };
-
-    await postJson(webhookUrl, message);
-    res.status(200).send('OK');
+    try {
+        await postJson(webhookUrl, message);
+        res.status(200).send('OK');
+    } catch (error) {
+        console.error('Error sending message to Discord:', error);
+        res.status(500).send('Error sending message to Discord');
+    }
 });
 
 function postJson(url, body) {
